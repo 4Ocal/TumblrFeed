@@ -1,41 +1,45 @@
 //
-//  PhotoDetailsViewController.swift
+//  FullScreenPhotoViewController.swift
 //  tumblrFeed
 //
-//  Created by Calvin Chu on 2/8/17.
+//  Created by Calvin Chu on 2/9/17.
 //  Copyright © 2017 Kevin M Call. All rights reserved.
 //
 
 import UIKit
 
-class PhotoDetailsViewController: UIViewController {
+class FullScreenPhotoViewController: UIViewController, UIScrollViewDelegate {
 
-    @IBOutlet weak var photo: UIImageView!
-    var photoUrl: String!
+    @IBOutlet weak var scrollView: UIScrollView!
+    @IBOutlet weak var zoomablePhoto: UIImageView!
+    
+    var photo: UIImage!
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
         
-        if let imageUrl = URL(string: photoUrl!) {
-            self.photo.setImageWith(imageUrl)
-        }
+        scrollView.delegate = self
+        
+        zoomablePhoto.image = photo
+    
     }
 
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return zoomablePhoto
+    }
+
+    @IBAction func close(_ sender: UIButton) {
+        dismiss(animated: true, completion: nil)
+    }
+    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func didTapPhoto(_ sender: UITapGestureRecognizer) {
-        let mainStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let fullScreen = mainStoryboard.instantiateViewController(withIdentifier: "fullScreen") as! FullScreenPhotoViewController
-        fullScreen.photo = photo.image
-        present(fullScreen, animated: true, completion: nil)
-        
-    }
-    
+
     /*
     // MARK: - Navigation
 
@@ -45,6 +49,5 @@ class PhotoDetailsViewController: UIViewController {
         // Pass the selected object to the new view controller.
     }
     */
-    
 
 }
